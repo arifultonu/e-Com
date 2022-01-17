@@ -1,0 +1,40 @@
+jwt:
+    get:
+        token:
+            uri: /authenticate
+    http:
+        request:
+            header: Authorization
+    refresh:
+        token:
+            uri: /refresh
+    signing:
+        key:
+            secret: mySecret
+    token:
+        expiration:
+            in:
+                seconds: 604800000
+server:
+    port: 8080
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        hikari:
+            connectionTimeout: 30000
+            idleTimeout: 30000
+            maxLifetime: 2000000
+            maximumPoolSize: 100
+            minimumIdle: 5
+            poolName: DBCP
+        password: ''
+        url: jdbc:mysql://mysqldb/ecomjwtAuth
+        username: root
+    jpa:
+        database: mysql
+        hibernate:
+            ddl-auto: update
+        open-in-view: false
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL5Dialect
