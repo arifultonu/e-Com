@@ -9,5 +9,9 @@ public interface ClientService {
 
     ClientResponse getAllClients(int pageNo, int pageSize, String sortBy, String sortDir);
 
+    ClientDto getClientById(long id);
 
+    ClientDto updateClient(ClientDto clientDto, long id);
+
+    void deleteClientById(long id);
 }

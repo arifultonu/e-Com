@@ -1,6 +1,7 @@
 package com.example.ClientService.service.impl;
 
 import com.example.ClientService.entity.Client;
+import com.example.ClientService.exception.ResourceNotFoundException;
 import com.example.ClientService.payload.ClientDto;
 import com.example.ClientService.payload.ClientResponse;
 import com.example.ClientService.repository.ClientRepository;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -52,9 +54,58 @@ public class ClientServiceImpl implements ClientService {
 
         Page<Client> clients = clientRepository.findAll(pageable);
 
+        //get content for page object
         List<Client> listOfClients = clients.getContent();
 
+        List<ClientDto> content = listOfClients.stream().map(client ->
+                mapTODto(client)).collect(Collectors.toList());
+
+        ClientResponse clientResponse = new ClientResponse();
+
+        clientResponse.setContent(content);
+        clientResponse.setPageNo(clients.getNumber());
+        clientResponse.setPageSize(clients.getSize());
+        clientResponse.setTotalElements(clients.getTotalElements());
+        clientResponse.setTotalPages(clients.getTotalPages());
+        clientResponse.setLast(clients.isLast());
+
+        return clientResponse;
+
     }
+
+    @Override
+    public ClientDto getClientById(long id) {
+
+        Client client = clientRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("Client", "id", id));
+
+        return mapTODto(client);
+    }
+
+    @Override
+    public ClientDto updateClient(ClientDto clientDto, long id) {
+        Client client = clientRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("Client", "id", id));
+
+        client.setClientName(clientDto.getClientName());
+        client.setClientAddress(clientDto.getClientAddress());
+        client.setClientLogo(clientDto.getClientLogo());
+        client.setClientType(clientDto.getClientType());
+
+        Client updateClient = clientRepository.save(client);
+
+        return mapTODto(updateClient);
+
+    }
+
+    @Override
+    public void deleteClientById(long id) {
+        Client client = clientRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("Client", "id", id));
+
+        clientRepository.delete(client);
+    }
+
 
     //Convert Dto to Entity
     public Client mapToEntity(ClientDto clientDto){
