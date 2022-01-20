@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/client-api/clients")
@@ -33,6 +34,41 @@ public class ProductUserController {
 
     }
 
+    @GetMapping("/{clientId}/productUsers")
+    public List<ProductUserDto> getProductUsersByClientId(@PathVariable(name = "clientId") long clientId){
+
+        return productUserService.getProductUsersByPostId(clientId);
+    }
+
+    @GetMapping("/{clientId}/productUsers/{id}")
+    public ResponseEntity<ProductUserDto> getProductUserById(@PathVariable(name = "clientId") long clientId,
+                                                             @PathVariable(name = "id") long productUserId){
+
+        ProductUserDto productUserDto = productUserService.getProductUserById(clientId,productUserId);
+
+        return new ResponseEntity<>(productUserDto,HttpStatus.OK);
+    }
+
+    @PutMapping("/{clientId}/productUsers/{id}")
+    public ResponseEntity<ProductUserDto> updateProductUser(@PathVariable(name = "clientId") long clientId,
+                                                            @PathVariable(name = "id") long productUserId,
+                                                            @RequestBody ProductUserDto productUserDto){
+
+        ProductUserDto updatedProductUser = productUserService.updateProductUser(clientId,productUserId,productUserDto);
+
+        return new ResponseEntity<>(updatedProductUser,HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("/{clientId}/productUsers/{id}")
+    public ResponseEntity<String> deleteProductUser(@PathVariable(name = "clientId") long clientId,
+                                                    @PathVariable(name = "id") long productUserId){
+
+        productUserService.deleteProductUser(clientId, productUserId);
+
+        return new ResponseEntity<>("ProductUser has been deleted!",HttpStatus.OK);
+
+    }
 
 
 }
