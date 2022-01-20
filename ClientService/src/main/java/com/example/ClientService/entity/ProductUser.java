@@ -26,11 +26,12 @@ public class ProductUser {
     )
     private long id;
 
-    private long clientId;
+    private String prductUserName;
 
     private LocalDate createdDate;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "clientId", nullable = false)
-//    private Client client;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clientId", nullable = false)
+    private Client client;
+
 }

@@ -45,7 +45,7 @@ public class Client {
     @Column(columnDefinition = "BLOB")
     private byte[] clientType;
 
-//    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<ProductUser> productUsers = new HashSet<>();
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProductUser> productUsers = new HashSet<>();
 
 }
