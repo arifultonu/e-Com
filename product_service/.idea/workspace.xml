@@ -19,7 +19,12 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="SakibDev" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="JpbToolWindowState">
     <option name="myId2FirstActivated">
@@ -57,7 +62,16 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/product_service" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/scube/product_service/payload" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\SpringBoot\e-Com\product_service\src\main\java\com\scube\product_service\payload" />
+      <recent name="D:\SpringBoot\e-Com\product_service\src\main\java\com\scube\product_service" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.scube.product_service.utils" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="ProductServiceApplication" type="Application" factoryName="Application">
@@ -84,10 +98,26 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/SakibDev" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Product list Pageable, Other Issue Resolved." />
+    <option name="LAST_COMMIT_MESSAGE" value="Product list Pageable, Other Issue Resolved." />
   </component>
 </project>
