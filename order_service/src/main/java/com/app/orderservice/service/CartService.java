@@ -1,20 +1,17 @@
 package com.app.orderservice.service;
 
-import com.app.orderservice.entity.Cart;
-
-import com.app.orderservice.entity.Order;
-import com.app.orderservice.responseModel.CartResponseModel;
-import com.app.orderservice.responseModel.OrderResponseModel;
+import com.app.orderservice.dto.CartDto;
 
 import java.util.List;
 
 public interface CartService {
+    List<CartDto> getAllCart();
 
-    List<Cart> getAllCarts();
+    CartDto save(CartDto cartDto);
 
-    CartResponseModel save(Cart cart);
+    CartDto findCartById(long cartId);
 
-    CartResponseModel update(long id, Cart cart);
+    CartDto updateCartById(long cartId, CartDto cartDto);
 
-    CartResponseModel delete(long id);
+    void deleteCartById(long cartId);
 }

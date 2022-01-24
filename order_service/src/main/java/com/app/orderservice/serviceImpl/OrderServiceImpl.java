@@ -1,75 +1,116 @@
 package com.app.orderservice.serviceImpl;
 
 import com.app.orderservice.entity.Order;
+import com.app.orderservice.exception.ResourceNotFoundException;
 import com.app.orderservice.repository.OrderRepository;
-import com.app.orderservice.responseModel.OrderResponseModel;
+import com.app.orderservice.dto.OrderDto;
 import com.app.orderservice.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
 
     @Override
-    public List<Order> getAllOrders() {
-        return orderRepository.getAllOrders();
+    public List<OrderDto> getAllOrder() {
+
+        List<Order> orders = orderRepository.findAll();
+
+        log.info("Inside getAllShipment of ShipmentService");
+
+        return orders.stream().map(order ->
+                mapToOrderDto(order)).collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderDto save(OrderDto orderDto) {
+        //business logic
+        Order order = mapToEntity(orderDto);
+
+        //save Shipment to DB
+        Order newOrder = orderRepository.save(order);
+
+        //Convert Entity to Dto
+        OrderDto newOrderDto = mapToOrderDto(newOrder);
+
+        log.info("Inside createOrder of OrderService");
+
+        return newOrderDto;
     }
 
 
     @Override
-    public OrderResponseModel save(Order order) {
-        //business logic
-        Order entity = orderRepository.save(order);
+    public OrderDto findOrderById(long orderId) {
 
-        OrderResponseModel model = new OrderResponseModel();
-        if(entity.getOrderId()>0){
-            model.setOutCode(String.valueOf(entity.getOrderId()));
-            model.setOutMessage("Save Successfully");
-        }
+        Order order = orderRepository.findById(orderId).orElseThrow(()-> new ResourceNotFoundException("Order","id",orderId));
 
-        return model;
+        log.info("Inside findByOrderId of OrderService");
+        return mapToOrderDto(order);
     }
 
     @Override
-    public OrderResponseModel update(long id, Order order) {
-        //business logic
-        Order updateOrder = orderRepository.findById(id).get();
+    public OrderDto updateOrderById(long orderId, OrderDto orderDto) {
 
-        updateOrder.setOrderUserId(order.getOrderUserId());
-        updateOrder.setOrderDate(order.getOrderDate());
-        updateOrder.setOrderProductId(order.getOrderProductId());
-        updateOrder.setOrderStatus(order.getOrderStatus());
-        updateOrder.setOrderApprovalDate(order.getOrderApprovalDate());
-        updateOrder.setOrderUpdateDate(order.getOrderUpdateDate());
-        updateOrder.setOrderApprovedStatus(order.getOrderApprovedStatus());
-        orderRepository.save(updateOrder);
+        Order order = orderRepository.findById(orderId).orElseThrow(()-> new ResourceNotFoundException("Order","id",orderId));
 
-        OrderResponseModel model = new OrderResponseModel();
-        if(updateOrder.getOrderId()>0){
-            model.setOutCode(String.valueOf(updateOrder.getOrderId()));
-            model.setOutMessage("Update Successfully");
-        }
+        order.setOrderUserId(orderDto.getOrderUserId());
+        order.setOrderDate(orderDto.getOrderDate());
+        order.setOrderProductId(orderDto.getOrderProductId());
+        order.setOrderStatus(orderDto.getOrderStatus());
+        order.setOrderApprovalDate(orderDto.getOrderApprovalDate());
+        order.setOrderUpdateDate(orderDto.getOrderUpdateDate());
+        order.setOrderApprovedStatus(orderDto.getOrderApprovedStatus());
 
-        return model;
+        Order updatedOrder = orderRepository.save(order);
+
+        log.info("Inside updateByOrderId of OrderService");
+
+        return mapToOrderDto(updatedOrder);
     }
 
-
     @Override
-    public OrderResponseModel delete(long id) {
-        //business logic
-        Order deleteOrder = orderRepository.findById(id).get();
-        orderRepository.delete(deleteOrder);
+    public void deleteOrderById(long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(()-> new ResourceNotFoundException("Order","id",orderId));
 
-        OrderResponseModel model = new OrderResponseModel();
+        log.info("Inside deleteByOrderId of OrderService");
 
-        model.setOutCode(String.valueOf(id));
-        model.setOutMessage("Delete Successfully");
+        orderRepository.delete(order);
+    }
 
-        return model;
+    public Order mapToEntity(OrderDto orderDto){
+        Order order= new Order();
+        /*order.setOrderId(orderDto.getOrderId());*/
+        order.setOrderUserId(orderDto.getOrderUserId());
+        order.setOrderDate(orderDto.getOrderDate());
+        order.setOrderProductId(orderDto.getOrderProductId());
+        order.setOrderStatus(orderDto.getOrderStatus());
+        order.setOrderApprovalDate(orderDto.getOrderApprovalDate());
+        order.setOrderUpdateDate(orderDto.getOrderUpdateDate());
+        order.setOrderApprovedStatus(orderDto.getOrderApprovedStatus());
+
+        return order;
+    }
+
+    private OrderDto mapToOrderDto(Order order) {
+        OrderDto  orderDto = new  OrderDto();
+
+        orderDto.setOrderId(order.getOrderId());
+        orderDto.setOrderUserId(order.getOrderUserId());
+        orderDto.setOrderDate(order.getOrderDate());
+        orderDto.setOrderProductId(order.getOrderProductId());
+        orderDto.setOrderStatus(order.getOrderStatus());
+        orderDto.setOrderApprovalDate(order.getOrderApprovalDate());
+        orderDto.setOrderUpdateDate(order.getOrderUpdateDate());
+        orderDto.setOrderApprovedStatus(order.getOrderApprovedStatus());
+
+        return orderDto;
     }
 }

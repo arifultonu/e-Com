@@ -1,72 +1,100 @@
 package com.app.orderservice.serviceImpl;
 
 import com.app.orderservice.entity.Cart;
-import com.app.orderservice.entity.Order;
+import com.app.orderservice.exception.ResourceNotFoundException;
 import com.app.orderservice.repository.CartRepository;
-import com.app.orderservice.responseModel.CartResponseModel;
-
-import com.app.orderservice.responseModel.OrderResponseModel;
+import com.app.orderservice.dto.CartDto;
 import com.app.orderservice.service.CartService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class CartServiceImpl implements CartService {
     @Autowired
-    private CartRepository cartRepository;
+    CartRepository cartRepository;
 
     @Override
-    public List<Cart> getAllCarts() {
-        return cartRepository.getAllCarts();
+    public List<CartDto> getAllCart() {
+
+        List<Cart> carts = cartRepository.findAll();
+
+        log.info("Inside getAllCart of CartService");
+
+        return carts.stream().map(cart ->
+                mapToCartDto(cart)).collect(Collectors.toList());
     }
 
     @Override
-    public CartResponseModel save(Cart cart) {
+    public CartDto save(CartDto cartDto) {
         //business logic
-        Cart entity = cartRepository.save(cart);
+        Cart cart = mapToEntity(cartDto);
 
-        CartResponseModel model = new CartResponseModel();
-        if(entity.getCartId()>0){
-            model.setOutCode(String.valueOf(entity.getCartId()));
-            model.setOutMessage("Save Successfully");
-        }
+        //save Shipment to DB
+        Cart newCart = cartRepository.save(cart);
 
-        return model;
+        //Convert Entity to Dto
+        CartDto newCartDto = mapToCartDto(newCart);
+
+        log.info("Inside createCart of CartService");
+
+        return newCartDto;
+    }
+
+
+    @Override
+    public CartDto findCartById(long cartId) {
+
+        Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new ResourceNotFoundException("Cart","id",cartId));
+
+        log.info("Inside findByCartId of CartService");
+        return mapToCartDto(cart);
     }
 
     @Override
-    public CartResponseModel update(long id, Cart cart) {
-        //business logic
-        Cart updateCart = cartRepository.findById(id).get();
+    public CartDto updateCartById(long cartId, CartDto cartDto) {
 
-        updateCart.setCartAddDate(cart.getCartAddDate());
-        updateCart.setCartSessionId(cart.getCartSessionId());
-        updateCart.setCartUserId(cart.getCartUserId());
+        Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new ResourceNotFoundException("Cart","id",cartId));
 
-        cartRepository.save(updateCart);
+        cart.setCartAddDate(cartDto.getCartAddDate());
+        cart.setCartSessionId(cartDto.getCartSessionId());
+        cart.setCartUserId(cartDto.getCartUserId());
 
-        CartResponseModel model = new CartResponseModel();
-        if(updateCart.getCartId()>0){
-            model.setOutCode(String.valueOf(updateCart.getCartId()));
-            model.setOutMessage("Update Successfully");
-        }
+        Cart updatedCart = cartRepository.save(cart);
 
-        return model;
+        log.info("Inside updateByCartId of CartService");
+
+        return mapToCartDto(updatedCart);
     }
 
     @Override
-    public CartResponseModel delete(long id) {
-        //business logic
-        Cart deleteCart = cartRepository.findById(id).get();
-        cartRepository.delete(deleteCart);
+    public void deleteCartById(long cartId) {
+        Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new ResourceNotFoundException("Cart","id",cartId));
 
-        CartResponseModel model = new CartResponseModel();
+        log.info("Inside deleteByCartId of CartService");
 
-        model.setOutCode(String.valueOf(id));
-        model.setOutMessage("Delete Successfully");
+        cartRepository.delete(cart);
+    }
 
-        return model;
+    public Cart mapToEntity(CartDto cartDto){
+        Cart cart= new Cart();
+        /*cart.setCartId(cartDto.getCartId());*/
+        cart.setCartAddDate(cartDto.getCartAddDate());
+        cart.setCartSessionId(cartDto.getCartSessionId());
+        cart.setCartUserId(cartDto.getCartUserId());
+        return cart;
+    }
+
+    private CartDto mapToCartDto(Cart cart) {
+        CartDto cartDto = new CartDto();
+        cartDto.setCartId(cart.getCartId());
+        cartDto.setCartAddDate(cart.getCartAddDate());
+        cartDto.setCartSessionId(cart.getCartSessionId());
+        cartDto.setCartUserId(cart.getCartUserId());
+        return cartDto;
     }
 }

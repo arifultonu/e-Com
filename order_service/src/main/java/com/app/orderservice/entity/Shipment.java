@@ -32,4 +32,10 @@ public class Shipment {
 
     @Column(nullable = false)
     private Date shipmentDate;
+
+    /*
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shipment_order_id", nullable = false)
+    private Order order;
+    */
 }

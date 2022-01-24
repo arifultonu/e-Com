@@ -35,4 +35,14 @@ public class Cart {
 
     @Column(nullable = false)
     private long cartUserId;
+
+    /*
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_product_id", nullable = false)
+    private Product product;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_user_id", nullable = false)
+    private User user;
+     */
 }

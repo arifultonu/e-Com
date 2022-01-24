@@ -1,66 +1,60 @@
 package com.app.orderservice.controller;
 
-import com.app.orderservice.responseModel.ShipmentDto;
+import com.app.orderservice.dto.ShipmentDto;
 import com.app.orderservice.service.ShipmentService;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
-@RequestMapping("/shipment_api/")
+@RequestMapping("/shipment-api/")
 @Slf4j
 public class ShipmentController {
-   /* @Autowired
+
+   @Autowired
     ShipmentService shipmentService;
 
-    @PostMapping("/category/{categoryId}/product")
-    public ShipmentDto createShipment(@PathVariable("categoryId") Long categoryId,
-                                      @RequestBody ShipmentDto shipmentDto) {
-
-        log.info("Inside the createProduct Controller");
-
-        return shipmentService.createShipment(categoryId, ShipmentDto);
-    }
-
-    @GetMapping("/product")
-    public List<ProductDto> getAllProduct() {
+    @GetMapping(value="/shipments")
+    public List<ShipmentDto> getAllShipment() {
 
         log.info("Inside the getAllProduct Controller");
 
-        return productService.getAllProduct();
+        return shipmentService.getAllShipment();
     }
 
-    @GetMapping("/category/{categoryId}/product/{productId}")
-    public ProductDto getProductById(@PathVariable("categoryId") Long categoryId,
-                                     @PathVariable("productId") Long productId) {
-
-        log.info("Inside the getProductById Controller");
-
-        return productService.getProductById(categoryId,productId);
+    @PostMapping(value="/save")
+    public ShipmentDto save(@RequestBody ShipmentDto shipmentDto ){
+        return shipmentService.save(shipmentDto);
     }
 
-    @PutMapping("/category/{categoryId}/product/{productId}")
-    public ProductDto updateProduct(@PathVariable("categoryId") Long categoryId,
-                                    @PathVariable("productId") Long productId,
-                                    @RequestBody ProductDto productDto) {
-
-        log.info("Inside the updateProduct Controller");
-
-        return productService.updateProduct(categoryId, productId, productDto);
-
+    @GetMapping("/find/{id}")
+    public ResponseEntity<ShipmentDto> findShipmentById(@PathVariable(name = "id") long shipmentId) {
+        log.info("Inside the findShipmentById Controller");
+        ShipmentDto shipmentDtoResponse = shipmentService.findShipmentById(shipmentId);
+        return new ResponseEntity<>(shipmentDtoResponse, HttpStatus.OK);
     }
 
+    @PutMapping(value="/update/{id}")
+    public ResponseEntity<ShipmentDto> updateShipmentById(@PathVariable(name = "id") long shipmentId, @RequestBody ShipmentDto shipmentDto) {
+        log.info("Inside the updateShipmentById Controller");
+        ShipmentDto shipmentDtoResponse =  shipmentService.updateShipmentById(shipmentId, shipmentDto);
 
+        return new ResponseEntity<>(shipmentDtoResponse, HttpStatus.OK);
+    }
 
-    @DeleteMapping("/category/{categoryId}/product/{productId}")
-    public String deleteProduct(@PathVariable("categoryId") Long categoryId,
-                                @PathVariable("productId") Long productId) {
+    @DeleteMapping(value="/delete/{id}")
+    public ResponseEntity<String> deleteShipmentById(@PathVariable(name = "id") long shipmentId) {
 
-        log.info("Inside the deleteProduct Controller");
+        log.info("Inside the deleteShipmentById Controller");
 
-        productService.deleteProduct(categoryId, productId);
-        return "Product Deleted Successfully";
+        shipmentService.deleteShipmentById(shipmentId);
 
-    }*/
+        return new ResponseEntity<>("Shipment Deleted Successfully", HttpStatus.OK);
+    }
 }

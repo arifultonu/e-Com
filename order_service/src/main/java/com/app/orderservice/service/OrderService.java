@@ -1,16 +1,17 @@
 package com.app.orderservice.service;
 
-import com.app.orderservice.entity.Order;
-import com.app.orderservice.responseModel.OrderResponseModel;
+import com.app.orderservice.dto.OrderDto;
 
 import java.util.List;
 
 public interface OrderService {
-    List<Order> getAllOrders();
+    List<OrderDto> getAllOrder();
 
-    OrderResponseModel save(Order order);
+    OrderDto save(OrderDto orderDto);
 
-    OrderResponseModel update(long id, Order order);
+    OrderDto findOrderById(long orderId);
 
-    OrderResponseModel delete(long id);
+    OrderDto updateOrderById(long orderId, OrderDto orderDto);
+
+    void deleteOrderById(long orderId);
 }
