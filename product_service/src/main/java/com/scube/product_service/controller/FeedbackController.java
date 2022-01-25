@@ -4,6 +4,10 @@ import com.scube.product_service.payload.FeedbackDto;
 import com.scube.product_service.payload.ProductDto;
 import com.scube.product_service.service.FeedbackService;
 import com.scube.product_service.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +25,15 @@ public class FeedbackController {
     @Autowired
     FeedbackService feedbackService;
 
+    @Operation(summary = "This is to save a feedback stored in Db for a unique product.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Saved feedback from Db for a unique product.",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404",
+                    description = "Product not found with id : productId.",
+                    content = @Content)
+    })
     @PostMapping("/products/{productId}/feedbacks")
     public FeedbackDto createFeedback(@PathVariable("productId") long productId,
                                       @RequestBody FeedbackDto feedbackDto) {
@@ -28,6 +41,16 @@ public class FeedbackController {
 
         return feedbackService.createFeedback(productId, feedbackDto);
     }
+
+    @Operation(summary = "This is to fetch all feedback stored in Db for a unique product.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Fetched feedbacks stored in Db for a unique product.",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "500",
+                    description = "Feedback is not from this product",
+                    content = @Content)
+    })
 
     @GetMapping("/products/{productId}/feedbacks")
     public List<FeedbackDto> getAllFeedbackByProductId(@PathVariable("productId") long productId) {
@@ -37,6 +60,19 @@ public class FeedbackController {
         return feedbackService.getAllFeedbackByProductId(productId);
 
     }
+
+    @Operation(summary = "This is to update unique feedback stored in Db for a unique product.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Updated feedback form Db for a unique product.",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404",
+                    description = "Feedback not found with id : feedbackId.",
+                    content = @Content),
+            @ApiResponse(responseCode = "500",
+                    description = "Feedback is not from this product.",
+                    content = @Content)
+    })
 
     @PutMapping("/products/{productId}/feedbacks/{feedbackId}")
     public ResponseEntity<FeedbackDto> updateFeedback(@PathVariable("productId") long productId,
@@ -50,6 +86,19 @@ public class FeedbackController {
 
     }
 
+    @Operation(summary = "This is to fetch unique feedback stored in Db for a unique product.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Fetched feedback form Db for a unique product.",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404",
+                    description = "Feedback not found with id : feedbackId.",
+                    content = @Content),
+            @ApiResponse(responseCode = "500",
+                    description = "Feedback is not from this product.",
+                    content = @Content)
+    })
+
     @GetMapping("/products/{productId}/feedbacks/{feedbackId}")
     public ResponseEntity<FeedbackDto> getFeedbackById(@PathVariable("productId") long productId,
                                                        @PathVariable("feedbackId") long feedbackId) {
@@ -60,6 +109,19 @@ public class FeedbackController {
         return new ResponseEntity<>(feedbackDtoResponse, HttpStatus.OK);
 
     }
+
+    @Operation(summary = "This is to delete a unique feedback stored in Db for a unique product.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Feedback deleted successfully.",
+                    content = {@Content(mediaType = "text/plain;charset=UTF-8")}),
+            @ApiResponse(responseCode = "404",
+                    description = "Feedback not found with id : feedbackId.",
+                    content = @Content),
+            @ApiResponse(responseCode = "500",
+                    description = "Feedback is not from this product.",
+                    content = @Content)
+    })
 
     @DeleteMapping("/products/{productId}/feedbacks/{feedbackId}")
     public ResponseEntity<String> deleteFeedbackById(@PathVariable("productId") long productId,
