@@ -3,6 +3,8 @@ package com.example.ClientService.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -21,7 +23,7 @@ public class ProductUser {
             initialValue = 1
     )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
+            strategy = GenerationType.AUTO,
             generator = "productUser_id_gen"
     )
     private long id;
@@ -31,7 +33,10 @@ public class ProductUser {
     private LocalDate createdDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    //@OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "clientId", nullable = false)
     private Client client;
+
+
 
 }

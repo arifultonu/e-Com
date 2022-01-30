@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,7 +26,7 @@ public class Client {
             initialValue = 1
     )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
+            strategy = GenerationType.AUTO,
             generator = "client_id_gen"
     )
     private long id;
@@ -46,6 +47,21 @@ public class Client {
     private byte[] clientType;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProductUser> productUsers = new HashSet<>();
+    //private Set<ProductUser> productUsers = new HashSet<>();
+    private List<ProductUser> productUsers;
+
+//    public Client addProductUser(ProductUser productUser)
+//    {
+//        productUsers.add(productUser);
+//        productUser.setClient(this);
+//        return this;
+//    }
+//
+//    public Client removeProductUser(ProductUser productUser)
+//    {
+//        productUsers.remove(productUser);
+//        productUser.setClient(null);
+//        return this;
+//    }
 
 }

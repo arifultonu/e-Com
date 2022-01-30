@@ -103,6 +103,7 @@ public class ClientServiceImpl implements ClientService {
         Client client = clientRepository.findById(id).orElseThrow(()->
                 new ResourceNotFoundException("Client", "id", id));
 
+
         clientRepository.delete(client);
     }
 
