@@ -4,11 +4,19 @@ import com.example.ClientService.entity.Client;
 import com.example.ClientService.entity.ProductUser;
 import com.example.ClientService.exception.ClientServiceApiException;
 import com.example.ClientService.exception.ResourceNotFoundException;
+
+import com.example.ClientService.payload.ClientDto;
+import com.example.ClientService.payload.ClientResponse;
 import com.example.ClientService.payload.ProductUserDto;
+import com.example.ClientService.payload.ProductUserResponse;
 import com.example.ClientService.repository.ClientRepository;
 import com.example.ClientService.repository.ProductUserRepository;
 import com.example.ClientService.service.ProductUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -48,12 +56,45 @@ public class ProductUserServiceImpl implements ProductUserService {
 
     //get list
     @Override
-    public List<ProductUserDto> getProductUsersByPostId(long clientId) {
+    public List<ProductUserDto> getProductUsersByClientId(long clientId) {
 
         List<ProductUser> productUsers = productUserRepository.findByClientId(clientId);
 
         return productUsers.stream().map(productUser -> mapToDto(productUser)).collect(Collectors.toList());
     }
+
+    //implement paginaion later
+    /*
+    @Override
+    public ProductUserResponse getAllProductUsers(long clientId,
+                                                  int pageNo, int pageSize, String sortBy, String sortDir) {
+
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() :
+                Sort.by(sortBy).descending() ;
+
+        //create pageable instance
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+
+        Page<ProductUser> productUsers = productUserRepository.findByClientId(c,pageable);
+
+        //get content for page object
+        List<ProductUser> productUserList = productUsers.getContent();
+
+        List<ProductUserDto> content = productUserList.stream().map(productUser ->
+                mapToDto(productUser)).collect(Collectors.toList());
+
+        ProductUserResponse productUserResponse = new ProductUserResponse();
+
+        productUserResponse.setContent(content);
+        productUserResponse.setPageNo(productUsers.getNumber());
+        productUserResponse.setPageSize(productUsers.getSize());
+        productUserResponse.setTotalElements(productUsers.getTotalElements());
+        productUserResponse.setTotalPages(productUsers.getTotalPages());
+        productUserResponse.setLast(productUsers.isLast());
+
+        return productUserResponse;
+
+    }*/
 
     //get 1 entity
     @Override

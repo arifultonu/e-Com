@@ -122,7 +122,7 @@ public class ClientServiceImpl implements ClientService {
             System.out.println(productUser.getPrductUserName()+" ; "+ productUser.getId());
             productUserService.deleteProductUser(id,productUser.getId());
         }
-        productUserRepository.removeByClientId(id);
+        //productUserRepository.removeByClientId(id);
         
         clientRepository.delete(client);
 
