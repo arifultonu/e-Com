@@ -47,8 +47,8 @@ public class Client {
     private byte[] clientType;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
-    //private Set<ProductUser> productUsers = new HashSet<>();
-    private List<ProductUser> productUsers;
+    private Set<ProductUser> productUsers = new HashSet<>();
+    //private List<ProductUser> productUsers;
 
 //    public Client addProductUser(ProductUser productUser)
 //    {

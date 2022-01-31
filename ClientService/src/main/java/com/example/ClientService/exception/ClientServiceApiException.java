@@ -2,16 +2,16 @@ package com.example.ClientService.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class ClientServiceApiExcepion extends RuntimeException{
+public class ClientServiceApiException extends RuntimeException{
     private HttpStatus httpStatus;
     private String message;
 
-    public ClientServiceApiExcepion(HttpStatus httpStatus, String message) {
+    public ClientServiceApiException(HttpStatus httpStatus, String message) {
         this.httpStatus = httpStatus;
         this.message = message;
     }
 
-    public ClientServiceApiExcepion(String message, HttpStatus httpStatus, String message1) {
+    public ClientServiceApiException(String message, HttpStatus httpStatus, String message1) {
         super(message);
         this.httpStatus = httpStatus;
         this.message = message1;

@@ -2,7 +2,7 @@ package com.example.ClientService.service.impl;
 
 import com.example.ClientService.entity.Client;
 import com.example.ClientService.entity.ProductUser;
-import com.example.ClientService.exception.ClientServiceApiExcepion;
+import com.example.ClientService.exception.ClientServiceApiException;
 import com.example.ClientService.exception.ResourceNotFoundException;
 import com.example.ClientService.payload.ProductUserDto;
 import com.example.ClientService.repository.ClientRepository;
@@ -101,7 +101,7 @@ public class ProductUserServiceImpl implements ProductUserService {
 
         if(productUser.getClient().getId() != client.getId()){
 
-            throw new ClientServiceApiExcepion(HttpStatus.BAD_REQUEST, "productUser does not belong to the client");
+            throw new ClientServiceApiException(HttpStatus.BAD_REQUEST, "productUser does not belong to the client");
         }
 
         return productUser;

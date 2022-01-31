@@ -32,7 +32,7 @@ public class ProductUser {
 
     private LocalDate createdDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne//(fetch = FetchType.LAZY)
     //@OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "clientId", nullable = false)
     private Client client;
