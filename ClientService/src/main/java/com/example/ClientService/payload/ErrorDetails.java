@@ -1,4 +1,4 @@
-package com.springboot.blog.payload;
+package com.example.ClientService.payload;
 
 import java.util.Date;
 

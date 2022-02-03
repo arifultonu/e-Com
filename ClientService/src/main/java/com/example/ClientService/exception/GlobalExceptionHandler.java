@@ -3,7 +3,7 @@ package com.example.ClientService.exception;
 import com.example.ClientService.exception.ClientServiceApiException;
 import com.example.ClientService.exception.ResourceNotFoundException;
 import com.example.ClientService.service.ClientService;
-import com.springboot.blog.payload.ErrorDetails;
+import com.example.ClientService.payload.ErrorDetails;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
