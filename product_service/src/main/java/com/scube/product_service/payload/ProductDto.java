@@ -21,6 +21,6 @@ public class ProductDto {
 
     private String productCreateDate;
 
-    private Set<FeedbackDto> feedback;
+    //private Set<FeedbackDto> feedback;
 
 }

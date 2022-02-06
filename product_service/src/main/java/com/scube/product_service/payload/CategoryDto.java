@@ -16,5 +16,5 @@ public class CategoryDto {
     @Size(min = 5, message = "Category Name should have 5 characters.")
     private String categoryName;
 
-    private Set<ProductDto> products;
+    //private Set<ProductDto> products;
 }
