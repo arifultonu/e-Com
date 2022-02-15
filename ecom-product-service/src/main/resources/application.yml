@@ -1,0 +1,15 @@
+server:
+  port: 9094
+
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.11.201.180:3306/schooldb
+    username: admin
+    password: 1234
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+  application:
+    name: PRODUCT-SERVICE
