@@ -45,6 +45,15 @@ public class ProductController {
         return productService.createProduct(categoryId, productDto);
     }
 
+    @PostMapping("/categories/{categoryId}/products")
+    public ArrayList<ProductDto> createMultipleProduct(@PathVariable("categoryId") long categoryId,
+                                                       @Valid @RequestBody ArrayList<ProductDto> productDto) {
+
+        log.info("Inside the createProduct Controller");
+
+        return productService.createMultipleProduct(categoryId, productDto);
+    }
+
 
     @Operation(summary = "This is to fetch All the Products stored in Db for a unique category.")
     @ApiResponses(value = {

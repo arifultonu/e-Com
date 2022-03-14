@@ -55,6 +55,35 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ArrayList<ProductDto> createMultipleProduct(long categoryId, ArrayList<ProductDto> productDto) {
+
+        ArrayList<ProductDto> productDto1 = new ArrayList<>();
+
+        for (int counter = 0; counter < productDto.size(); counter++) {
+
+            Product product = mapToEntity(productDto.get(counter));
+            Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category","id",categoryId));
+            product.setCategory(category);
+
+
+            product.setProductCreateDate(dateTime.toString());
+
+            //save Product to db
+            Product newProduct = productRepository.save(product);
+
+            log.info("Inside createProduct of ProductService");
+            productDto1.add(mapToProductDto(newProduct));
+        }
+
+
+
+
+
+        return productDto1;
+    }
+
+
+    @Override
     public List<ProductDto> getAllProductByCategoryId(long categoryId) {
         //retrive products by categoryId
         List<Product> products = productRepository.findByCategoryId(categoryId);
